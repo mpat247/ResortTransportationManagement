@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+/* Adjust margins as needed */
+.my-5 {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
