@@ -1,0 +1,13 @@
+/* Include Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+.project-name {
+    font-family: 'Roboto', sans-serif; /* Use Roboto font */
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #007bff;
+    font-weight: bold;
+    letter-spacing: 0.5px; /* Slightly increase letter spacing for a more airy feel */
+    position: relative;
+    text-align: center; /* Center-align the text */
+}

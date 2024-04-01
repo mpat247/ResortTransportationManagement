@@ -1,0 +1,15 @@
+.guest-view-container {
+    padding: 20px;
+  }
+  
+  .guest-view-container .card {
+    border-radius: 10px;
+    border: none;
+    overflow: hidden; /* Optional: if you want to ensure no content spills out */
+  }
+  
+  .guest-view-container .card-title {
+    font-weight: bold;
+    color: #0056b3; /* Theme color */
+  }
+  

@@ -1,7 +1,8 @@
 # main.py
 from fastapi import FastAPI
 from routes.users import router as user_router
-from routes.guests import router as guest_router
+from routes.reservations import router as reservation_router
+from routes.carts import router as cart_router
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -27,4 +28,6 @@ app.add_middleware(
 )
 
 app.include_router(user_router, prefix="/users", tags=["users"])
-app.include_router(guest_router, prefix="/guests", tags=["guests"])
+app.include_router(reservation_router, prefix="/reservations", tags=["reservations"])
+app.include_router(cart_router, prefix="/carts", tags=["carts"])
+

@@ -5,36 +5,44 @@ import './LoginForm.css'; // Import the CSS file for styling
 import qs from 'qs';
 
 const LoginForm = () => {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const usernameRef = useRef(null);
+  const emailRef = useRef(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
     setIsLoading(true);
-    // Check if username or password is empty
-    if (credentials.username === '' || credentials.password === '') {
-      setError('Please enter username and password.');
-      usernameRef.current.focus();
+    // Check if email or password is empty
+    if (credentials.email === '' || credentials.password === '') {
+      setError('Please enter email and password.');
+      emailRef.current.focus();
       setIsLoading(false);
       return;
     }
     try {
       const response = await axios.post('http://localhost:8000/users/login', 
         qs.stringify({
-          username: credentials.username, 
+          username: credentials.email, // The API expects 'username' in the form data, but we use 'email' for clarity
           password: credentials.password
         }), {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       });
-      localStorage.setItem('token', response.data.access_token);
-      navigate('/home');
+      if (response.data.access_token) {
+        localStorage.setItem('token', response.data.access_token);
+        localStorage.setItem('role', response.data.user_data.role);
+        localStorage.setItem('loggedEmail', response.data.user_data.email);
+
+        console.log(response.data.user_data.email)
+
+
+        navigate('/home'); // Redirect to the home page after successful login
+      }
     } catch (error) {
       setError(error.response?.data?.detail || 'Login failed. Please try again.');
-      usernameRef.current.focus();
+      emailRef.current.focus();
     } finally {
       setIsLoading(false);
     }
@@ -46,14 +54,14 @@ const LoginForm = () => {
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
       <form className="login-form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="email">Email</label>
           <input
-            ref={usernameRef}
-            id="username"
-            type="text"
-            name="username"
-            value={credentials.username}
-            onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+            ref={emailRef}
+            id="email"
+            type="email" // Changed to type="email" for proper validation
+            name="email" // Updated to match the state
+            value={credentials.email}
+            onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
             className="form-control"
           />
         </div>
@@ -71,7 +79,7 @@ const LoginForm = () => {
         <button type="submit" className="btn login-btn" disabled={isLoading}>
           {isLoading ? 'Logging in...' : 'Login'}
         </button>
-        <button type="button" className="btn link-btn" onClick={() => navigate('/register')}>Register</button>
+        <button type="button" className="btn link-btn" onClick={() => navigate('/register')}>Don't have an account? Register</button>
       </form>
     </div>
   );

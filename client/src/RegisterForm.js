@@ -5,35 +5,33 @@ import './RegisterForm.css'; // Ensure this is correctly linked
 
 const RegisterForm = () => {
   const [userData, setUserData] = useState({
-    username: '',
     email: '',
     password: '',
-    full_name: '',
-    contact_number: ''
+    name: '', // Changed from full_name to match the backend schema
+    role: 'guest', // Added role, with a default value of 'guest'
+    // Removed username and contact_number
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Check if any field is empty
-    if (Object.values(userData).some(value => value === '')) {
+    // Check if any field is empty, excluding the role
+    if (Object.entries(userData).some(([key, value]) => value === '' && key !== 'role')) {
       setError('Please fill in all fields.');
       return;
     }
     try {
       await axios.post('http://localhost:8000/users/register', userData);
-      navigate('/login');
+      navigate('/login'); // Redirect to login page on successful registration
     } catch (error) {
-      console.error('Registration failed:', error.response.data.detail);
+      setError('Registration failed: ' + error.response.data.detail);
     }
   };
 
-  const capitalizeFirstLetter = (str) => {
-    return str
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
   };
 
   return (
@@ -41,22 +39,55 @@ const RegisterForm = () => {
       <div className="project-name">Resort Rapid Transit</div>
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
       <form className="register-form" onSubmit={handleSubmit}>
-        {/* Iterate over userData keys to create form fields */}
-        {Object.keys(userData).map((key) => (
-          <div className="form-group" key={key}>
-            <label htmlFor={key}>{capitalizeFirstLetter(key.replace('_', ' '))}</label>
-            <input
-              id={key}
-              type={key === 'password' ? 'password' : 'text'}
-              name={key}
-              value={userData[key]}
-              onChange={(e) => setUserData({ ...userData, [key]: e.target.value })}
-              className="form-control"
-            />
-          </div>
-        ))}
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            value={userData.email}
+            onChange={handleChange}
+            className="form-control"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            value={userData.password}
+            onChange={handleChange}
+            className="form-control"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="name">Name</label>
+          <input
+            id="name"
+            type="text"
+            name="name"
+            value={userData.name}
+            onChange={handleChange}
+            className="form-control"
+          />
+        </div>
+        {/* Optionally, let users choose their role; you might want to remove this for production */}
+        <div className="form-group">
+          <label htmlFor="role">Role</label>
+          <select
+            id="role"
+            name="role"
+            value={userData.role}
+            onChange={handleChange}
+            className="form-control"
+          >
+            <option value="guest">Guest</option>
+            <option value="admin">Admin</option> {/* Be cautious with admin role registration */}
+          </select>
+        </div>
         <button type="submit" className="btn register-btn">Register</button>
-        <button type="button" className="btn link-btn" onClick={() => navigate('/login')}>Log In</button>
+        <button type="button" className="btn link-btn" onClick={() => navigate('/login')}>Already have an account? Log In</button>
       </form>
     </div>
   );
