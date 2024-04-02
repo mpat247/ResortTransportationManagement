@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, Modal, Form, Table } from 'react-bootstrap';
 import './ManageReservations.css';
+import REACT_APP_API_URL from './config'; // Import the API URL from the config file
+
 
 const ManageReservations = () => {
     const [reservations, setReservations] = useState([]);
@@ -17,7 +19,7 @@ const ManageReservations = () => {
     useEffect(() => {
         const fetchReservations = async () => {
             try {
-                const { data } = await axios.get(`http://localhost:8000/reservations/${email}`);
+                const { data } = await axios.get(`${REACT_APP_API_URL}/reservations/${email}`);
                 // Ensure your API returns a reservation_id for each reservation
                 setReservations(data);
                 console.log(data)
@@ -71,12 +73,12 @@ const ManageReservations = () => {
                 check_out_date: new Date(editFormData.check_out_date + 'T00:00:00.000Z').toISOString(),
             };
                 const editReservations = await axios.put(
-                    `http://localhost:8000/reservations/${selectedReservationId}`,
+                    `${REACT_APP_API_URL}/reservations/${selectedReservationId}`,
                     updatedFormData
                 );
                 setShowEditModal(false);
                 // Refetch reservations to reflect the updated data
-                const updatedReservations = await axios.get(`http://localhost:8000/reservations/${email}`);
+                const updatedReservations = await axios.get(`${REACT_APP_API_URL}/reservations/${email}`);
                 setReservations(updatedReservations.data);
             } catch (error) {
                 console.error('Failed to update reservation:', error);

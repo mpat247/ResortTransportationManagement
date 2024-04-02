@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './LoginForm.css'; // Import the CSS file for styling
 import qs from 'qs';
+import REACT_APP_API_URL from './config'; // Import the API URL from the config file
 
 const LoginForm = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -23,7 +24,7 @@ const LoginForm = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:8000/users/login', 
+      const response = await axios.post(`${REACT_APP_API_URL}/users/login`, 
         qs.stringify({
           username: credentials.email, // The API expects 'username' in the form data, but we use 'email' for clarity
           password: credentials.password

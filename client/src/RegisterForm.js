@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './RegisterForm.css'; // Ensure this is correctly linked
+import REACT_APP_API_URL from './config'; // Import the API URL from the config file
 
 const RegisterForm = () => {
   const [userData, setUserData] = useState({
@@ -22,7 +23,7 @@ const RegisterForm = () => {
       return;
     }
     try {
-      await axios.post('http://localhost:8000/users/register', userData);
+      await axios.post(`${REACT_APP_API_URL}/users/register`, userData);
       navigate('/login'); // Redirect to login page on successful registration
     } catch (error) {
       setError('Registration failed: ' + error.response.data.detail);
