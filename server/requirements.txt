@@ -8,3 +8,4 @@ uvicorn
 pymongo
 pydantic_core
 pycparser
+python-dotenv
