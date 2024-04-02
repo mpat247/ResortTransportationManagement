@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+import os
 # main.py
 from fastapi import FastAPI
 from routes.users import router as user_router
@@ -6,6 +8,11 @@ from routes.carts import router as cart_router
 from routes.routing import router as routing_router
 
 from fastapi.middleware.cors import CORSMiddleware
+
+
+# Load environment variables from .env file
+load_dotenv()
+
 
 
 app = FastAPI()
