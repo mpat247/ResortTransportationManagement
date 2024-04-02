@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from routes.users import router as user_router
 from routes.reservations import router as reservation_router
 from routes.carts import router as cart_router
-from routes.routing import router as routing_router
+#from routes.routing import router as routing_router
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -38,5 +38,5 @@ app.add_middleware(
 app.include_router(user_router, prefix="/users", tags=["users"])
 app.include_router(reservation_router, prefix="/reservations", tags=["reservations"])
 app.include_router(cart_router, prefix="/carts", tags=["carts"])
-app.include_router(routing_router, prefix="/routing", tags=["routing"])
+#app.include_router(routing_router, prefix="/routing", tags=["routing"])
 
