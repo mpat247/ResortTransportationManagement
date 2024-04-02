@@ -1,0 +1,10 @@
+fastapi
+motor
+passlib
+pydantic
+PyJWT
+python-jwt
+uvicorn
+pymongo
+pydantic_core
+pycparser
