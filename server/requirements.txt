@@ -23,3 +23,4 @@ jwcrypto
 fastapi
 python-jwt
 pydantic[email]
+httpx
