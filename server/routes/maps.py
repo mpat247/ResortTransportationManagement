@@ -8,6 +8,7 @@ router = APIRouter()
 GOOGLE_MAPS_API_KEY = "AIzaSyBrfEu3XvsCtzycAJTA-CW46nwVDO6fgXs"
 
 async def google_maps_request(url: str, params: dict):
+    """Sends a request to a specified Google Maps API URL with given parameters."""
     async with httpx.AsyncClient() as client:
         response = await client.get(url, params=params)
     if response.status_code != 200:
@@ -15,16 +16,21 @@ async def google_maps_request(url: str, params: dict):
     return response.json()
 
 @router.get("/route-optimization/")
-async def get_optimal_route(origin: str, destination: str) -> Dict:
-    """Fetch the optimal route using Google Maps Directions API."""
+async def get_optimal_route(locations: List[str] = Query(...)) -> Dict:
+    """Optimize route between multiple locations using Google Maps Directions API."""
     url = "https://maps.googleapis.com/maps/api/directions/json"
-    params = {"origin": origin, "destination": destination, "key": GOOGLE_MAPS_API_KEY}
+    waypoints = "|".join(locations[1:-1])  # Exclude first and last for waypoints
+    params = {
+        "origin": locations[0],
+        "destination": locations[-1],
+        "waypoints": f"optimize:true|{waypoints}",
+        "key": GOOGLE_MAPS_API_KEY
+    }
     return await google_maps_request(url, params)
 
 @router.get("/distance-time-estimation/")
-async def get_distance_and_time(
-    origins: List[str] = Query(...), destinations: List[str] = Query(...)
-) -> dict:
+async def get_distance_and_time(origins: List[str] = Query(...), destinations: List[str] = Query(...)) -> Dict:
+    """Estimate travel time and distance between multiple origins and destinations."""
     url = "https://maps.googleapis.com/maps/api/distancematrix/json"
     params = {
         "origins": "|".join(origins),

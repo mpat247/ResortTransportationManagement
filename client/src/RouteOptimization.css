@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
+
+
+
+.route-optimization-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .map-container {
+    flex-grow: 2;
+  }
+  
+  .route-details-panel {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa;
+    overflow-y: auto;
+  }
+  
+  .route-details-panel h2 {
+    margin-bottom: 20px;
+    color: #007bff;
+  }
+  
+  .route-details-panel input {
+    padding: 10px;
+    margin-bottom: 10px;
+    width: calc(100% - 22px); /* Adjust width based on padding */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .route-details-panel button {
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .route-details-panel button:hover {
+    background-color: #0056b3;
+  }
+  
+  .route-info {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .route-optimization-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .passenger-selection-panel {
+    width: 20%;
+    background-color: #f7f7f7;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-right: 1px solid #ccc;
+  }
+  
+  .passenger-selection-panel label {
+    margin-bottom: 10px;
+  }
+  
+  .passenger-selection-panel input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .passenger-selection-panel button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .passenger-selection-panel button:hover {
+    background-color: #0056b3;
+  }
+  
+  .passenger-selection-panel p {
+    padding: 10px;
+    background-color: #dcffe4;
+    border: 1px solid #a3dca8;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+  
+  .map-container {
+    width: 55%;
+    border-right: 1px solid #ccc;
+  }
+  
+  /* General Container Styles */
+.route-optimization-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .map-container,
+  .passenger-selection-panel {
+    border-right: 1px solid #ccc;
+  }
+  
+  /* Flex Growth Adjustments */
+  .map-container {
+    flex-grow: 2; /* Larger portion for map */
+  }
+  
+  .route-details-panel,
+  .passenger-selection-panel {
+    flex-grow: 1; /* Equal portions for details and selection */
+  }
+  
+  /* Panel Styling */
+  .route-details-panel,
+  .passenger-selection-panel {
+    padding: 20px;
+    background-color: #f8f9fa;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Element Specific Styling */
+  .route-details-panel h2,
+  .passenger-selection-panel label {
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  .route-details-panel input,
+  .passenger-selection-panel input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  /* Button Styling with Bootstrap Classes for consistency */
+  .route-details-panel button,
+  .passenger-selection-panel button {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  /* Info Panel Styling */
+  .route-info {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  /* Utility Styling */
+  .passenger-selection-panel p {
+    background-color: #dcffe4;
+    border: 1px solid #a3dca8;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+  
