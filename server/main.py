@@ -6,6 +6,7 @@ from routes.users import router as user_router
 from routes.reservations import router as reservation_router
 from routes.carts import router as cart_router
 from routes.maps import router as maps_router
+from routes.trips import router as trips_router
 
 #from routes.routing import router as routing_router
 
@@ -45,4 +46,6 @@ app.include_router(reservation_router, prefix="/reservations", tags=["reservatio
 app.include_router(cart_router, prefix="/carts", tags=["carts"])
 #app.include_router(routing_router, prefix="/routing", tags=["routing"])
 app.include_router(maps_router, prefix="/maps", tags=["maps"])
+app.include_router(trips_router, prefix="/trips", tags=["trips"])
+
 

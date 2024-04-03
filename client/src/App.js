@@ -4,6 +4,8 @@ import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import HomePage from './HomePage';
 import RouteOptimization from './RouteOptimization';
+import Mapping from './Mapping';
+
 
 const App = () => {
   return (
@@ -13,6 +15,7 @@ const App = () => {
         <Route path="/register" element={<RegisterForm />} />
        <Route path="/home" element={<HomePage />} />
        <Route path="/RouteOptimization" element={<RouteOptimization />} />
+        <Route path="/Mapping" element={<Mapping />} />
 
 
         <Route path="/" element={<LoginForm />} />

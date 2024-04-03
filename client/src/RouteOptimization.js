@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { GoogleMap, useLoadScript, Marker, DirectionsRenderer, Autocomplete } from '@react-google-maps/api';
-import './RouteOptimization.css'; // Ensure this CSS file is updated as per the previous instructions
+import axios from 'axios';
+import './RouteOptimization.css';
 
 const libraries = ["places"];
 const center = { lat: 43.657683, lng: -79.377551 }; // Example center, George Vari Engineering Building, Toronto
@@ -17,7 +18,7 @@ const options = {
 
 const RouteOptimization = () => {
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: "YOUR_API_KEY", // Replace with your actual Google Maps API key
+    googleMapsApiKey: "AIzaSyBrfEu3XvsCtzycAJTA-CW46nwVDO6fgXs", // Replace with your actual Google Maps API key
     libraries,
   });
 
@@ -39,22 +40,19 @@ const RouteOptimization = () => {
     const waypoints = destinations.slice(1, -1).map(dest => ({ location: dest.address, stopover: true }));
 
     const directionsService = new window.google.maps.DirectionsService();
-    directionsService.route(
-      {
-        origin,
-        destination,
-        waypoints,
-        optimizeWaypoints: true,
-        travelMode: window.google.maps.TravelMode.DRIVING,
-      },
-      (result, status) => {
-        if (status === window.google.maps.DirectionsStatus.OK) {
-          setDirectionsResponse(result);
-        } else {
-          console.error(`error fetching directions ${result}`);
-        }
+    directionsService.route({
+      origin,
+      destination,
+      waypoints,
+      optimizeWaypoints: true,
+      travelMode: window.google.maps.TravelMode.DRIVING,
+    }, (result, status) => {
+      if (status === window.google.maps.DirectionsStatus.OK) {
+        setDirectionsResponse(result);
+      } else {
+        console.error(`error fetching directions ${result}`);
       }
-    );
+    });
   }, [destinations]);
 
   const addDestination = () => {
@@ -71,7 +69,41 @@ const RouteOptimization = () => {
     setDestinations(updatedDestinations);
   };
 
+  // A function to deep clone objects while avoiding circular references
+  function deepCloneAndClean(obj, cache = new WeakSet()) {
+    if (obj === null || typeof obj !== 'object') {
+      return obj;
+    }
+    if (cache.has(obj)) {
+      return; // Circular reference found, stop cloning
+    }
+    const result = Array.isArray(obj) ? [] : {};
+    cache.add(obj);
+    for (const key of Object.keys(obj)) {
+      const value = obj[key];
+      // Omit problematic keys or clone others
+      if (typeof value !== 'function' && key !== '__e3_') {
+        result[key] = deepCloneAndClean(value, cache);
+      }
+    }
+    return result;
+  }
+
+  const saveTripToDatabase = async () => {
+    const cleanDirectionsResponse = deepCloneAndClean(directionsResponse);
+    try {
+      const response = await axios.post('http://localhost:8000/save-trip', {
+        destinations,
+        directionsResponse: cleanDirectionsResponse,
+      });
+      console.log('Trip saved:', response.data);
+    } catch (error) {
+      console.error('Failed to save trip:', error);
+    }
+  };
+
   const startTrip = () => {
+    saveTripToDatabase(); // Save the trip data to the database
     setSavedTrips([...savedTrips, { destinations, directionsResponse }]);
     setDestinations([{ address: '', ref: React.createRef() }]);
     setDirectionsResponse(null);
@@ -83,7 +115,6 @@ const RouteOptimization = () => {
   return (
     <div className="container-fluid h-100">
       <div className="row h-100">
-        {/* Passenger Selection Panel */}
         <div className="col-md-3 passenger-selection-panel">
           <h2>Saved Trips</h2>
           <ul className="saved-trips-list">
@@ -94,7 +125,6 @@ const RouteOptimization = () => {
             ))}
           </ul>
         </div>
-        {/* Map Container */}
         <div className="col-md-6 map-container">
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
@@ -105,7 +135,6 @@ const RouteOptimization = () => {
             {directionsResponse && <DirectionsRenderer directions={directionsResponse} />}
           </GoogleMap>
         </div>
-        {/* Route Details Panel */}
         <div className="col-md-3 route-details-panel">
           <h2>Trip Details</h2>
           {destinations.map((destination, index) => (
